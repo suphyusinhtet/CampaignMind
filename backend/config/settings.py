@@ -17,6 +17,14 @@ class Settings:
     # Gemini OpenAI-compatible endpoint
     GEMINI_BASE_URL: str = "https://generativelanguage.googleapis.com/v1beta/openai/"
 
+    # ── Supabase ─────────────────────────────────────────────
+    SUPABASE_URL: str = os.getenv("SUPABASE_URL", "")
+    SUPABASE_KEY: str = os.getenv("SUPABASE_KEY", "")            # anon key
+    SUPABASE_SERVICE_KEY: str = os.getenv("SUPABASE_SERVICE_KEY", "")  # service role key
+
+    # ── App ──────────────────────────────────────────────────
+    FRONTEND_URL: str = os.getenv("FRONTEND_URL", "http://localhost:3000")
+
     # ── Paths ────────────────────────────────────────────────
     BASE_DIR: Path = Path(__file__).parent.parent
     VECTOR_DB_PATH: str = os.getenv(
@@ -47,6 +55,10 @@ class Settings:
                 "GEMINI_API_KEY is not set. "
                 "Get one at https://aistudio.google.com/apikey"
             )
+        if not self.SUPABASE_URL:
+            raise ValueError("SUPABASE_URL is not set.")
+        if not self.SUPABASE_SERVICE_KEY:
+            raise ValueError("SUPABASE_SERVICE_KEY is not set.")
         return True
 
     def summary(self) -> str:
@@ -59,6 +71,7 @@ class Settings:
             f"  VECTOR_DB:     {self.VECTOR_DB_PATH}\n"
             f"  RAW_DOCS:      {self.RAW_DOCS_PATH}\n"
             f"  API_KEY SET:   {'yes ✓' if self.GEMINI_API_KEY else 'NO - MISSING ✗'}\n"
+            f"  SUPABASE:      {'set ✓' if self.SUPABASE_URL else 'NO - MISSING ✗'}\n"
             f"{'='*40}\n"
         )
 

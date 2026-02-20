@@ -12,6 +12,8 @@ from agents.case_intelligence import CaseIntelligenceAgent
 from agents.market_landscape import MarketLandscapeAgent
 from agents.insight_generator import InsightGeneratorAgent
 from agents.orchestrator import MasterOrchestrator
+from routers.conversations import router as conversations_router
+from config.settings import settings
 
 
 # Initialize FastAPI app
@@ -21,14 +23,20 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# Add CORS middleware for web client access
+# CORS — allow the frontend origin (locked down; not open wildcard)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production, specify allowed origins
+    allow_origins=[
+        "http://localhost:3000",
+        settings.FRONTEND_URL,
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Mount conversation routes (auth-protected multi-turn chat)
+app.include_router(conversations_router)
 
 
 # Request/Response Models
