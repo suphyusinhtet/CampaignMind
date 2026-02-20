@@ -1,12 +1,22 @@
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
+import {
+  getSupabaseEnv,
+  isGuestModeEnabled,
+  isSupabaseConfigured,
+} from '@/lib/supabase/config'
 
 export async function middleware(request: NextRequest) {
+  if (!isSupabaseConfigured) {
+    return NextResponse.next({ request })
+  }
+
+  const { url, anonKey } = getSupabaseEnv()
   let supabaseResponse = NextResponse.next({ request })
 
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    url,
+    anonKey,
     {
       cookies: {
         getAll() {
@@ -46,7 +56,7 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith('/auth/callback') ||
     pathname.startsWith('/_next') ||
     pathname.startsWith('/favicon')
-  if (!isPublicRoute && !user) {
+  if (!isPublicRoute && !user && !isGuestModeEnabled) {
     return NextResponse.redirect(new URL('/login', request.url))
   }
 

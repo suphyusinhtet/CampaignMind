@@ -31,15 +31,15 @@ export function ConversationItem({
     <a
       href={`/conversations/${conversation.id}`}
       className={clsx(
-        'group flex items-start justify-between rounded-lg px-3 py-2 text-sm transition-colors',
+        'group flex items-start justify-between rounded-xl px-2.5 py-2 text-sm transition-colors',
         isActive
-          ? 'bg-gray-700 text-white'
-          : 'text-gray-400 hover:bg-gray-800 hover:text-gray-200',
+          ? 'bg-zinc-700 text-white'
+          : 'text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200',
       )}
     >
       <div className="flex-1 min-w-0">
         <p className="truncate font-medium leading-tight">{conversation.title}</p>
-        <p className="text-xs text-gray-500 mt-0.5">
+        <p className="mt-0.5 text-xs text-zinc-500">
           {formatDistanceToNow(new Date(conversation.updated_at), {
             addSuffix: true,
           })}
@@ -47,7 +47,7 @@ export function ConversationItem({
       </div>
       <button
         onClick={handleDelete}
-        className="ml-2 shrink-0 text-gray-600 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-opacity mt-0.5"
+        className="ml-2 mt-0.5 shrink-0 text-zinc-600 opacity-0 transition-opacity hover:text-red-400 group-hover:opacity-100"
         title="Delete conversation"
       >
         <Trash2 size={13} />

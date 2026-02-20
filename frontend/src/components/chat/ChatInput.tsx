@@ -38,8 +38,8 @@ export function ChatInput({
   return (
     <div
       className={clsx(
-        'flex items-end gap-2 rounded-xl border border-gray-200 bg-white px-4 py-3 transition-shadow',
-        'focus-within:border-blue-400 focus-within:ring-2 focus-within:ring-blue-100',
+        'flex items-end gap-3 rounded-3xl border border-zinc-300 bg-white px-4 py-3 shadow-[0_2px_10px_rgba(0,0,0,0.04)] transition-shadow',
+        'focus-within:border-zinc-400 focus-within:shadow-[0_4px_20px_rgba(0,0,0,0.08)]',
         disabled && 'opacity-60',
       )}
     >
@@ -51,16 +51,16 @@ export function ChatInput({
         placeholder={placeholder ?? 'Message CampaignMind...'}
         minRows={minRows}
         maxRows={12}
-        className="flex-1 resize-none bg-transparent text-sm text-gray-900 placeholder:text-gray-400 outline-none leading-relaxed"
+        className="flex-1 resize-none bg-transparent text-sm leading-relaxed text-zinc-900 outline-none placeholder:text-zinc-400"
       />
       <button
         onClick={submit}
         disabled={!canSend}
         className={clsx(
-          'shrink-0 rounded-lg p-1.5 transition-colors',
+          'shrink-0 rounded-full p-2 transition-colors',
           canSend
-            ? 'bg-blue-600 text-white hover:bg-blue-700'
-            : 'bg-gray-100 text-gray-300 cursor-not-allowed',
+            ? 'bg-zinc-900 text-white hover:bg-zinc-700'
+            : 'cursor-not-allowed bg-zinc-100 text-zinc-300',
         )}
       >
         <Send size={16} />

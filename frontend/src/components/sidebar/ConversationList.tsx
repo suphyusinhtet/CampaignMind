@@ -16,14 +16,14 @@ export function ConversationList() {
 
   if (conversations.length === 0) {
     return (
-      <p className="px-3 py-2 text-xs text-gray-600">
+      <p className="px-2 py-2 text-xs text-zinc-500">
         No conversations yet. Start a new chat!
       </p>
     )
   }
 
   return (
-    <div className="space-y-0.5">
+    <div className="space-y-1">
       {conversations.map((convo) => (
         <ConversationItem
           key={convo.id}

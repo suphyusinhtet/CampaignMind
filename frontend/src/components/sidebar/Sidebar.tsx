@@ -1,55 +1,68 @@
 'use client'
-import type { User } from '@supabase/supabase-js'
 import { LogOut, Zap } from 'lucide-react'
+import { clsx } from 'clsx'
 import { NewChatButton } from './NewChatButton'
 import { ConversationList } from './ConversationList'
 import { useAuth } from '@/hooks/useAuth'
 
 interface SidebarProps {
-  user: User
+  userEmail: string | null
+  authEnabled?: boolean
+  className?: string
 }
 
-export function Sidebar({ user }: SidebarProps) {
+export function Sidebar({
+  userEmail,
+  authEnabled = true,
+  className,
+}: SidebarProps) {
   const { signOut } = useAuth()
 
   return (
-    <aside className="flex h-full w-64 shrink-0 flex-col bg-gray-900 text-white">
+    <aside
+      className={clsx(
+        'flex h-full w-72 shrink-0 flex-col border-r border-[#2f2f2f] bg-[#171717] text-white',
+        className,
+      )}
+    >
       {/* Header */}
-      <div className="flex items-center gap-2 border-b border-gray-700 px-4 py-3">
-        <Zap size={16} className="text-blue-400" />
-        <span className="text-sm font-semibold tracking-tight">
+      <div className="flex items-center gap-2 border-b border-[#2f2f2f] px-4 py-3">
+        <Zap size={16} className="text-emerald-400" />
+        <span className="text-sm font-semibold tracking-tight text-zinc-100">
           CampaignMind
         </span>
       </div>
 
       {/* New Chat */}
-      <div className="px-2 pt-2">
+      <div className="px-3 pt-3">
         <NewChatButton />
       </div>
 
       {/* Conversation list */}
-      <div className="flex-1 overflow-y-auto px-2 py-2">
-        <p className="mb-1 px-3 text-[10px] font-semibold uppercase tracking-wider text-gray-500">
+      <div className="flex-1 overflow-y-auto px-3 py-3">
+        <p className="mb-2 px-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-zinc-500">
           Recent
         </p>
         <ConversationList />
       </div>
 
       {/* User footer */}
-      <div className="flex items-center gap-3 border-t border-gray-700 px-3 py-3">
-        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-blue-500 text-xs font-semibold text-white">
-          {user.email?.[0].toUpperCase() ?? '?'}
+      <div className="flex items-center gap-3 border-t border-[#2f2f2f] px-3 py-3">
+        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-zinc-700 text-xs font-semibold text-white">
+          {userEmail?.[0].toUpperCase() ?? 'G'}
         </div>
         <div className="flex-1 min-w-0">
-          <p className="truncate text-xs text-gray-300">{user.email}</p>
+          <p className="truncate text-xs text-zinc-300">{userEmail ?? 'Guest mode'}</p>
         </div>
-        <button
-          onClick={signOut}
-          className="shrink-0 text-gray-500 hover:text-white transition-colors"
-          title="Sign out"
-        >
-          <LogOut size={15} />
-        </button>
+        {authEnabled && (
+          <button
+            onClick={signOut}
+            className="shrink-0 text-zinc-500 transition-colors hover:text-white"
+            title="Sign out"
+          >
+            <LogOut size={15} />
+          </button>
+        )}
       </div>
     </aside>
   )

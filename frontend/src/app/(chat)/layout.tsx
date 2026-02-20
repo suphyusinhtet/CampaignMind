@@ -1,25 +1,31 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
-import { Sidebar } from '@/components/sidebar/Sidebar'
+import { ChatShell } from '@/components/layout/ChatShell'
+import { isGuestModeEnabled, isSupabaseConfigured } from '@/lib/supabase/config'
 
 export default async function ChatLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  if (!isSupabaseConfigured) {
+    return (
+      <ChatShell userEmail={null} authEnabled={false}>
+        {children}
+      </ChatShell>
+    )
+  }
+
   const supabase = await createClient()
   const {
     data: { user },
   } = await supabase.auth.getUser()
 
-  if (!user) redirect('/login')
+  if (!user && !isGuestModeEnabled) redirect('/login')
 
   return (
-    <div className="flex h-screen overflow-hidden">
-      <Sidebar user={user} />
-      <main className="flex flex-1 flex-col overflow-hidden bg-gray-50">
-        {children}
-      </main>
-    </div>
+    <ChatShell userEmail={user?.email ?? null} authEnabled={!!user}>
+      {children}
+    </ChatShell>
   )
 }

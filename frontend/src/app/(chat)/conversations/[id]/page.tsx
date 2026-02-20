@@ -38,22 +38,38 @@ export default function ConversationPage({ params }: PageProps) {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages, sending])
 
+  const handleRegenerate = (assistantMessageId: string) => {
+    const assistantIndex = messages.findIndex((m) => m.id === assistantMessageId)
+    if (assistantIndex <= 0) return
+
+    for (let i = assistantIndex - 1; i >= 0; i -= 1) {
+      if (messages[i].role === 'user') {
+        sendMessage(messages[i].content)
+        return
+      }
+    }
+  }
+
   return (
     <div className="flex flex-1 flex-col overflow-hidden">
       {/* Message thread */}
       <div className="flex-1 overflow-y-auto">
         {messages.length === 0 && !loading && !sending && (
           <div className="flex h-full items-center justify-center">
-            <p className="text-sm text-gray-400">
+            <p className="text-sm text-zinc-500">
               Send your first message to get started.
             </p>
           </div>
         )}
-        <MessageList messages={messages} loading={loading} />
+        <MessageList
+          messages={messages}
+          loading={loading}
+          onRegenerate={handleRegenerate}
+        />
         {sending && <ThinkingIndicator />}
         {error && (
           <div className="mx-auto max-w-3xl px-4 py-2">
-            <p className="rounded-lg bg-red-50 px-4 py-2 text-sm text-red-600">
+            <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-2 text-sm text-red-600">
               {error}
             </p>
           </div>
@@ -62,7 +78,7 @@ export default function ConversationPage({ params }: PageProps) {
       </div>
 
       {/* Input bar */}
-      <div className="border-t border-gray-200 bg-white px-4 py-3">
+      <div className="border-t border-zinc-200/80 bg-[#f7f7f8] px-4 py-4">
         <div className="mx-auto max-w-3xl">
           <ChatInput
             onSend={sendMessage}

@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
+import { isSupabaseConfigured } from '@/lib/supabase/config'
 
 /**
  * OAuth callback handler.
@@ -8,6 +9,10 @@ import { NextResponse } from 'next/server'
  */
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url)
+  if (!isSupabaseConfigured) {
+    return NextResponse.redirect(`${origin}/login?error=supabase_not_configured`)
+  }
+
   const code = searchParams.get('code')
   const next = searchParams.get('next') ?? '/'
 

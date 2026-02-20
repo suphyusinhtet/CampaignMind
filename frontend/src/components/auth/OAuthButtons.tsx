@@ -1,8 +1,12 @@
 'use client'
 import { createClient } from '@/lib/supabase/client'
+import { isSupabaseConfigured } from '@/lib/supabase/config'
 
 export function OAuthButtons() {
+  const disabled = !isSupabaseConfigured
+
   const handleOAuth = async (provider: 'google' | 'github') => {
+    if (disabled) return
     const supabase = createClient()
     await supabase.auth.signInWithOAuth({
       provider,
@@ -16,6 +20,7 @@ export function OAuthButtons() {
     <div className="grid grid-cols-2 gap-3">
       <button
         onClick={() => handleOAuth('google')}
+        disabled={disabled}
         className="flex items-center justify-center gap-2 rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
       >
         <svg className="w-4 h-4" viewBox="0 0 24 24">
@@ -40,6 +45,7 @@ export function OAuthButtons() {
       </button>
       <button
         onClick={() => handleOAuth('github')}
+        disabled={disabled}
         className="flex items-center justify-center gap-2 rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
       >
         <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -47,6 +53,12 @@ export function OAuthButtons() {
         </svg>
         GitHub
       </button>
+      {disabled && (
+        <p className="col-span-2 text-xs text-amber-700">
+          Supabase auth is disabled. Set `NEXT_PUBLIC_SUPABASE_URL` and
+          `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
+        </p>
+      )}
     </div>
   )
 }

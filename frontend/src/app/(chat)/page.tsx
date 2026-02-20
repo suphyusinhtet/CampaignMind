@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { ChatInput } from '@/components/chat/ChatInput'
 import { conversationsApi } from '@/lib/api/conversations'
-import { Zap } from 'lucide-react'
+import { Sparkles } from 'lucide-react'
 
 export default function NewChatPage() {
   const router = useRouter()
@@ -24,16 +24,16 @@ export default function NewChatPage() {
   }
 
   return (
-    <div className="flex flex-1 flex-col items-center justify-center p-8">
+    <div className="flex flex-1 flex-col items-center justify-center px-4 py-10 md:px-8">
       {/* Hero */}
-      <div className="mb-8 max-w-xl text-center">
-        <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-blue-600">
-          <Zap size={24} className="text-white" />
+      <div className="mb-8 max-w-2xl text-center">
+        <div className="mx-auto mb-4 flex h-11 w-11 items-center justify-center rounded-2xl bg-zinc-900">
+          <Sparkles size={20} className="text-white" />
         </div>
-        <h2 className="text-2xl font-semibold text-gray-900">
-          Enhance your campaign brief
+        <h2 className="text-3xl font-semibold tracking-tight text-zinc-900 md:text-4xl">
+          How can I help with your campaign?
         </h2>
-        <p className="mt-2 text-sm text-gray-500 leading-relaxed">
+        <p className="mt-3 text-sm leading-relaxed text-zinc-500 md:text-base">
           Paste your marketing brief below. Pathfinder AI will analyze it with
           trend intelligence, competitor case studies, and market landscape
           research.
@@ -41,7 +41,7 @@ export default function NewChatPage() {
       </div>
 
       {/* Input */}
-      <div className="w-full max-w-2xl">
+      <div className="w-full max-w-3xl rounded-3xl border border-zinc-200 bg-white p-4 shadow-[0_16px_50px_rgba(0,0,0,0.06)] md:p-6">
         <ChatInput
           onSend={handleSend}
           disabled={starting}
@@ -50,9 +50,9 @@ export default function NewChatPage() {
               ? 'Creating conversation...'
               : 'Paste your campaign brief here...\n\nExample: Campaign Objective: Launch awareness campaign for eco-friendly sneakers...'
           }
-          minRows={6}
+          minRows={5}
         />
-        <p className="mt-2 text-center text-xs text-gray-400">
+        <p className="mt-3 text-center text-xs text-zinc-400">
           Press Enter to send · Shift+Enter for new line
         </p>
       </div>

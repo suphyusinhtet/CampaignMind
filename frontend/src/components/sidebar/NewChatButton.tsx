@@ -23,7 +23,7 @@ export function NewChatButton() {
     <button
       onClick={handleNewChat}
       disabled={loading}
-      className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-gray-300 hover:bg-gray-800 hover:text-white transition-colors disabled:opacity-50"
+      className="flex w-full items-center gap-2 rounded-xl border border-zinc-700 bg-zinc-800/70 px-3 py-2.5 text-sm font-medium text-zinc-100 transition-colors hover:bg-zinc-700 disabled:opacity-50"
     >
       <Plus size={16} />
       New chat

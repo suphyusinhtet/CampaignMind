@@ -1,4 +1,5 @@
 import { SignupForm } from '@/components/auth/SignupForm'
+import Link from 'next/link'
 
 export default function SignupPage() {
   return (
@@ -13,6 +14,14 @@ export default function SignupPage() {
           </p>
         </div>
         <SignupForm />
+        <div className="border-t border-gray-200 pt-4">
+          <Link
+            href="/"
+            className="block text-center text-sm font-medium text-gray-600 hover:text-gray-900"
+          >
+            Continue as guest
+          </Link>
+        </div>
       </div>
     </div>
   )
