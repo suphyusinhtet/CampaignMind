@@ -1,0 +1,374 @@
+# Environment Variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.*.local
+*.env
+.env.*
+
+# API Keys and Secrets
+*secret*
+*SECRET*
+*token*
+*TOKEN*
+*key.json
+*credentials.json
+*.pem
+*.key
+*.cert
+*.crt
+.secrets/
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# ================================================================
+# BACKEND (Python/FastAPI)
+# ================================================================
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environments
+venv/
+ENV/
+env/
+.venv/
+backend/venv/
+backend/ENV/
+backend/env/
+
+# Pipenv
+*.lock  # Optional: comment this out if you want to commit Pipfile.lock
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Unit test / coverage
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+.python-version
+
+# Celery
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath
+*.sage.py
+
+# Spyder
+.spyderproject
+.spyproject
+
+# Rope
+.ropeproject
+
+# mkdocs
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre
+.pyre/
+
+# pytype
+.pytype/
+
+# Cython
+cython_debug/
+
+# ================================================================
+# FRONTEND (Next.js/React)
+# ================================================================
+
+# Dependencies
+frontend/node_modules/
+node_modules/
+/.pnp
+.pnp.js
+
+# Next.js
+frontend/.next/
+.next/
+frontend/out/
+out/
+frontend/build/
+.swc/
+
+# Production
+build/
+dist/
+
+# Testing
+coverage/
+.nyc_output/
+
+# Misc
+.DS_Store
+*.pem
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+lerna-debug.log*
+
+# Vercel
+.vercel
+.vercel.json
+
+# Turbo
+.turbo
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# ================================================================
+# DATA & STORAGE
+# ================================================================
+
+# Vector Database
+data/vectordb/
+backend/data/vectordb/
+*.chroma
+chroma/
+
+# Raw Documents
+data/raw_docs/
+backend/data/raw_docs/
+
+# Uploads
+uploads/
+*.upload
+
+# Large files
+*.csv
+*.xls
+*.xlsx
+*.pdf
+*.doc
+*.docx
+*.ppt
+*.pptx
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ================================================================
+# IDEs & EDITORS
+# ================================================================
+
+# VSCode
+.vscode/
+*.code-workspace
+.history/
+
+# IntelliJ / PyCharm
+.idea/
+*.iml
+*.ipr
+*.iws
+.idea_modules/
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+[._]*.s[a-v][a-z]
+[._]*.sw[a-p]
+[._]s[a-rt-v][a-z]
+[._]ss[a-gi-z]
+[._]sw[a-p]
+Session.vim
+Sessionx.vim
+.netrwhist
+*~
+tags
+[._]*.un~
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# ================================================================
+# OPERATING SYSTEMS
+# ================================================================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# ================================================================
+# DEPLOYMENT & CI/CD
+# ================================================================
+
+# Railway
+railway.json
+.railway/
+
+# Render
+render.yaml
+.render/
+
+# Docker
+docker-compose.override.yml
+.dockerignore
+
+# Kubernetes
+*.kubeconfig
+
+# Terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+
+# ================================================================
+# TEMPORARY & CACHE FILES
+# ================================================================
+
+# General
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+*~
+.cache/
+temp/
+tmp/
+
+# Package managers
+package-lock.json  # Optional: some prefer to commit this
+yarn.lock          # Optional: some prefer to commit this
+pnpm-lock.yaml     # Optional: some prefer to commit this
+
+# ================================================================
+# PROJECT-SPECIFIC
+# ================================================================
+
+# API response cache
+api_cache/
+*.cache
+
+# Test outputs
+test_results/
+test-results/
+playwright-report/
+test-output/
+
+# Generated files
+generated/
+*.generated.*
+
+# Documentation builds
+docs/_build/
+docs/.doctrees/
+
+# Backup files
+*.backup
+backup/
+backups/
+
