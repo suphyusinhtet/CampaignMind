@@ -146,7 +146,12 @@ uvloop==0.22.1
 watchfiles==1.1.1
 wcwidth==0.6.0
 websocket-client==1.9.0
-websockets==16.0
+websockets==15.0.1
 wrapt==1.17.3
 yarl==1.22.0
 zipp==3.23.0
+duckduckgo-search==8.1.1
+pytrends==4.9.2
+beautifulsoup4==4.14.3
+requests-html==0.10.0
+lxml==6.0.2

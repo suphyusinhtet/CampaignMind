@@ -2,11 +2,11 @@
 import asyncio
 from autogen_agentchat.messages import TextMessage
 from autogen_core import CancellationToken
-from agents.base_agent import PathfinderAgent
+from agents.base_agent import CampaignMindAgent
 from typing import Dict
 
 
-class InsightGeneratorAgent(PathfinderAgent):
+class InsightGeneratorAgent(CampaignMindAgent):
     """
     Synthesizes outputs from all specialist agents into strategic insights.
     """

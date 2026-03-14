@@ -2,12 +2,12 @@
 import asyncio
 from autogen_agentchat.messages import TextMessage
 from autogen_core import CancellationToken
-from agents.base_agent import PathfinderAgent
+from agents.base_agent import CampaignMindAgent
 from rag.knowledge_manager import get_knowledge_manager
 from typing import Dict, Optional
 
 
-class MarketLandscapeAgent(PathfinderAgent):
+class MarketLandscapeAgent(CampaignMindAgent):
     """
     Analyzes competitive landscape and positioning opportunities using RAG.
     """
@@ -31,7 +31,7 @@ class MarketLandscapeAgent(PathfinderAgent):
             n_results: Number of research documents to retrieve
             
         Returns:
-            JSON-formatted market analysis
+            Interactive markdown market analysis
         """
         # Build query
         query_parts = [
@@ -43,15 +43,31 @@ class MarketLandscapeAgent(PathfinderAgent):
         query = ' '.join([p for p in query_parts if p]).strip()
         
         # Retrieve market research
-        research_results = self.knowledge_manager.query(
+        market_results = self.knowledge_manager.query(
             query_text=query,
             doc_type="market_research",
             filters=filters,
             n_results=n_results
         )
         
+        # Retrieve adjacent evidence for competitor/product/strategy details
+        case_results = self.knowledge_manager.query(
+            query_text=query,
+            doc_type="case_studies",
+            filters=filters,
+            n_results=max(3, n_results // 2)
+        )
+        trend_results = self.knowledge_manager.query(
+            query_text=query,
+            doc_type="trends",
+            filters=filters,
+            n_results=max(3, n_results // 2)
+        )
+        
         # Format for agent
-        context = self._format_rag_results(research_results)
+        context_market = self._format_rag_results(market_results, "Market Research")
+        context_cases = self._format_rag_results(case_results, "Case Studies")
+        context_trends = self._format_rag_results(trend_results, "Trend Evidence")
         
         prompt = f"""Analyze the competitive landscape for this campaign:
 
@@ -59,10 +75,20 @@ CAMPAIGN CONTEXT:
 {self._format_brief_context(brief_context)}
 
 RETRIEVED MARKET RESEARCH:
-{context}
+{context_market}
 
-Provide your analysis in JSON format as specified in your system message.
-Focus on identifying positioning opportunities and whitespace."""
+RELEVANT COMPETITOR CASES:
+{context_cases}
+
+RELEVANT TREND SIGNALS:
+{context_trends}
+
+Provide your analysis using the interactive markdown structure specified in your system message.
+Focus on concise, source-backed competitive insights plus concrete implications for brief improvement.
+Prioritize:
+1) competitor examples,
+2) product feature patterns,
+3) digital strategy patterns."""
 
         response = await self.agent.on_messages(
             [TextMessage(content=prompt, source="user")],
@@ -79,17 +105,19 @@ Focus on identifying positioning opportunities and whitespace."""
                 lines.append(f"- {key.title()}: {value}")
         return '\n'.join(lines) if lines else "No context provided"
     
-    def _format_rag_results(self, results: list) -> str:
+    def _format_rag_results(self, results: list, section_name: str) -> str:
         """Format RAG results."""
         if not results:
-            return "No relevant market research found in knowledge base."
+            return f"No relevant {section_name.lower()} found in knowledge base."
         
-        formatted = []
+        formatted = [f"[{section_name}]"]
         for i, result in enumerate(results, 1):
             formatted.append(
-                f"\n--- Research {i} ---\n"
+                f"\n--- Evidence {i} ---\n"
                 f"Source: {result['metadata'].get('source', 'Unknown')}\n"
+                f"Brand: {result['metadata'].get('brand', 'N/A')}\n"
                 f"Industry: {result['metadata'].get('industry', 'N/A')}\n"
+                f"Geography: {result['metadata'].get('geography', 'N/A')}\n"
                 f"Audience: {result['metadata'].get('audience', 'N/A')}\n"
                 f"Content:\n{result['content']}\n"
             )

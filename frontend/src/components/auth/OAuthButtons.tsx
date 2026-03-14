@@ -1,9 +1,12 @@
 'use client'
 import { createClient } from '@/lib/supabase/client'
 import { isSupabaseConfigured } from '@/lib/supabase/config'
+import { useSearchParams } from 'next/navigation'
 
 export function OAuthButtons() {
   const disabled = !isSupabaseConfigured
+  const searchParams = useSearchParams()
+  const nextPath = searchParams.get('next') || '/'
 
   const handleOAuth = async (provider: 'google' | 'github') => {
     if (disabled) return
@@ -11,7 +14,7 @@ export function OAuthButtons() {
     await supabase.auth.signInWithOAuth({
       provider,
       options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
+        redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(nextPath)}`,
       },
     })
   }

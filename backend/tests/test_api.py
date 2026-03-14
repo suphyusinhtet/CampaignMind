@@ -100,7 +100,7 @@ def test_enhance_brief():
 
 
 if __name__ == "__main__":
-    print("PATHFINDER AI - API TESTS")
+    print("CampaignMind AI - API TESTS")
     print("=" * 70)
 
     try:

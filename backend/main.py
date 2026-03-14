@@ -12,13 +12,15 @@ from agents.case_intelligence import CaseIntelligenceAgent
 from agents.market_landscape import MarketLandscapeAgent
 from agents.insight_generator import InsightGeneratorAgent
 from agents.orchestrator import MasterOrchestrator
+from agents.agentic_orchestrator import AgenticMasterOrchestrator
 from routers.conversations import router as conversations_router
+from routers.agents import router as agents_router
 from config.settings import settings
 
 
 # Initialize FastAPI app
 app = FastAPI(
-    title="Pathfinder AI API",
+    title="CampaignMind AI API",
     description="Multi-agent system for enhancing marketing campaign briefs",
     version="1.0.0"
 )
@@ -28,8 +30,12 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        "http://localhost:3001",
+        "http://127.0.0.1:3001",
         settings.FRONTEND_URL,
     ],
+    allow_origin_regex=r"^https?://(localhost|127\.0\.0\.1)(:\d+)?$",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -37,6 +43,7 @@ app.add_middleware(
 
 # Mount conversation routes (auth-protected multi-turn chat)
 app.include_router(conversations_router)
+app.include_router(agents_router)
 
 
 # Request/Response Models
@@ -61,6 +68,11 @@ class BriefEnhancementRequest(BaseModel):
         }
 
 
+class BriefAnalysisRequest(BaseModel):
+    """Request model for brief analysis only."""
+    brief: str = Field(..., description="The marketing campaign brief to analyze")
+
+
 class BriefEnhancementResponse(BaseModel):
     """Response model for brief enhancement."""
     status: str
@@ -68,7 +80,16 @@ class BriefEnhancementResponse(BaseModel):
     trend_analysis: Optional[str] = None
     case_analysis: Optional[str] = None
     landscape_analysis: Optional[str] = None
+    creator_concepts: Optional[str] = None
     final_insights: str
+    processing_time_seconds: float
+    timestamp: str
+
+
+class BriefAnalysisResponse(BaseModel):
+    """Response model for brief analysis only."""
+    status: str
+    brief_analysis: str
     processing_time_seconds: float
     timestamp: str
 
@@ -86,7 +107,7 @@ async def root():
     """Root endpoint - API health check."""
     return HealthCheckResponse(
         status="healthy",
-        message="Pathfinder AI API is running",
+        message="CampaignMind AI API is running",
         timestamp=datetime.utcnow().isoformat()
     )
 
@@ -104,35 +125,37 @@ async def health_check():
 @app.post("/api/v1/enhance-brief", response_model=BriefEnhancementResponse)
 async def enhance_brief(request: BriefEnhancementRequest):
     """
-    Main endpoint: Enhance a marketing campaign brief using the Master Orchestrator.
+    Main endpoint: Enhance a marketing campaign brief using Agentic AI Agents.
     
-    The orchestrator intelligently:
+    The agentic orchestrator intelligently:
     1. Analyzes the brief for completeness
-    2. Determines which specialist agents are needed
-    3. Runs agents in parallel for speed
-    4. Synthesizes all analyses into strategic insights
+    2. Uses multi-step search strategies (RAG + Web + Scraping)
+    3. Self-corrects when data quality is low
+    4. Runs agents in parallel for speed
+    5. Synthesizes all analyses into strategic insights
     
     Returns a comprehensive brief enhancement with recommendations.
     """
     start_time = datetime.utcnow()
     
     try:
-        # Use the Master Orchestrator
-        print(f"[{datetime.utcnow().isoformat()}] Initializing Master Orchestrator...")
-        orchestrator = MasterOrchestrator()
+        # Use the Agentic Master Orchestrator
+        print(f"[{datetime.utcnow().isoformat()}] Initializing Agentic Master Orchestrator...")
+        orchestrator = AgenticMasterOrchestrator()
         
-        # Run orchestration
+        # Run agentic orchestration
         results = await orchestrator.enhance_brief(
             brief=request.brief,
             filters=request.filters,
-            n_results=request.n_results
+            n_results=request.n_results,
+            use_all_agents=True  
         )
         
         # Calculate processing time
         end_time = datetime.utcnow()
         processing_time = (end_time - start_time).total_seconds()
         
-        print(f"[{datetime.utcnow().isoformat()}] Brief enhancement complete in {processing_time:.2f}s")
+        print(f"[{datetime.utcnow().isoformat()}] Agentic brief enhancement complete in {processing_time:.2f}s")
         
         return BriefEnhancementResponse(
             status="success",
@@ -140,6 +163,7 @@ async def enhance_brief(request: BriefEnhancementRequest):
             trend_analysis=results["trend_analysis"],
             case_analysis=results["case_analysis"],
             landscape_analysis=results["landscape_analysis"],
+            creator_concepts=results.get("creator_concepts"),
             final_insights=results["final_insights"],
             processing_time_seconds=processing_time,
             timestamp=end_time.isoformat()
@@ -151,6 +175,28 @@ async def enhance_brief(request: BriefEnhancementRequest):
             status_code=500,
             detail=f"Brief enhancement failed: {str(e)}"
         )
+
+
+@app.post("/api/v1/brief-analyze", response_model=BriefAnalysisResponse)
+async def brief_analyze(request: BriefAnalysisRequest):
+    """
+    Analyze brief completeness only (fast path).
+    """
+    start_time = datetime.utcnow()
+    try:
+        analyzer = BriefAnalyzerAgent()
+        brief_analysis = await analyzer.analyze_brief(request.brief)
+        end_time = datetime.utcnow()
+        processing_time = (end_time - start_time).total_seconds()
+        return BriefAnalysisResponse(
+            status="success",
+            brief_analysis=brief_analysis,
+            processing_time_seconds=processing_time,
+            timestamp=end_time.isoformat(),
+        )
+    except Exception as e:
+        print(f"[{datetime.utcnow().isoformat()}] BRIEF_ANALYZE ERROR: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Brief analysis failed: {str(e)}")
 
 
 def _extract_brief_context(brief: str) -> Dict[str, str]:

@@ -6,7 +6,7 @@ load_dotenv(dotenv_path=Path(__file__).parent.parent / ".env")
 
 class Settings:
     """
-    Single source of truth for all Pathfinder configuration.
+    Single source of truth for all CampaignMind configuration.
     Configured for Gemini as the primary LLM via OpenAI-compatible API.
     """
 
@@ -24,6 +24,7 @@ class Settings:
 
     # ── App ──────────────────────────────────────────────────
     FRONTEND_URL: str = os.getenv("FRONTEND_URL", "http://localhost:3000")
+    ENABLE_GUEST_MODE: bool = os.getenv("ENABLE_GUEST_MODE", "true").strip().lower() != "false"
 
     # ── Paths ────────────────────────────────────────────────
     BASE_DIR: Path = Path(__file__).parent.parent
@@ -63,7 +64,7 @@ class Settings:
 
     def summary(self) -> str:
         return (
-            f"\nPathfinder Settings\n"
+            f"\nCampaignMind Settings\n"
             f"{'='*40}\n"
             f"  ENV:           {self.APP_ENV}\n"
             f"  MODEL:         {self.MODEL_NAME}\n"

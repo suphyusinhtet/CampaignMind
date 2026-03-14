@@ -1,6 +1,6 @@
 # scripts/ingest_docs.py
 """
-Sample script to ingest knowledge into Pathfinder AI.
+Sample script to ingest knowledge into CampaignMind AI.
 Run this to populate your vector database with sample data.
 """
 
@@ -19,7 +19,7 @@ def ingest_sample_data():
     km = get_knowledge_manager()
     
     print("=" * 60)
-    print("Ingesting Sample Knowledge into Pathfinder AI")
+    print("Ingesting Sample Knowledge into CampaignMind AI")
     print("=" * 60)
     print()
     

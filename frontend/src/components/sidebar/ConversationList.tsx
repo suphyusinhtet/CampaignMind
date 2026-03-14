@@ -4,7 +4,8 @@ import { ConversationItem } from './ConversationItem'
 import { Spinner } from '@/components/ui/Spinner'
 
 export function ConversationList() {
-  const { conversations, loading, deleteConversation } = useConversations()
+  const { conversations, loading, deleteConversation, renameConversation } =
+    useConversations()
 
   if (loading) {
     return (
@@ -29,6 +30,7 @@ export function ConversationList() {
           key={convo.id}
           conversation={convo}
           onDelete={deleteConversation}
+          onRename={renameConversation}
         />
       ))}
     </div>

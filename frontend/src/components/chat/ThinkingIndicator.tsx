@@ -12,7 +12,7 @@ export function ThinkingIndicator() {
           ))}
         </div>
         <span className="text-sm text-gray-400">
-          Pathfinder AI is analyzing your brief...
+          CampaignMind AI is analyzing your brief...
         </span>
       </div>
     </div>

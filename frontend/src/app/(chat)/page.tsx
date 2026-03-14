@@ -34,7 +34,7 @@ export default function NewChatPage() {
           How can I help with your campaign?
         </h2>
         <p className="mt-3 text-sm leading-relaxed text-zinc-500 md:text-base">
-          Paste your marketing brief below. Pathfinder AI will analyze it with
+          Paste your marketing brief below. CampaignMind AI will analyze it with
           trend intelligence, competitor case studies, and market landscape
           research.
         </p>

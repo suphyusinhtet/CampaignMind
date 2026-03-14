@@ -2,10 +2,10 @@
 import asyncio
 from autogen_agentchat.messages import TextMessage
 from autogen_core import CancellationToken
-from agents.base_agent import PathfinderAgent
+from agents.base_agent import CampaignMindAgent
 
 
-class BriefAnalyzerAgent(PathfinderAgent):
+class BriefAnalyzerAgent(CampaignMindAgent):
     """
     Analyzes campaign briefs to identify gaps, vague language, and contradictions.
     """
@@ -27,7 +27,7 @@ class BriefAnalyzerAgent(PathfinderAgent):
 
 {brief_text}
 
-Return your analysis in clear JSON format as specified in your system message."""
+Return your analysis in the structured markdown report format specified in your system message."""
 
         # Run the agent
         response = await self.agent.on_messages(

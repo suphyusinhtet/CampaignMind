@@ -2,12 +2,12 @@
 import asyncio
 from autogen_agentchat.messages import TextMessage
 from autogen_core import CancellationToken
-from agents.base_agent import PathfinderAgent
+from agents.base_agent import CampaignMindAgent
 from rag.knowledge_manager import get_knowledge_manager
 from typing import Dict, Optional
 
 
-class CaseIntelligenceAgent(PathfinderAgent):
+class CaseIntelligenceAgent(CampaignMindAgent):
     """
     Analyzes competitor campaigns and case studies using RAG.
     """
@@ -31,7 +31,7 @@ class CaseIntelligenceAgent(PathfinderAgent):
             n_results: Number of case studies to retrieve
             
         Returns:
-            JSON-formatted case analysis with learnings
+            Interactive markdown case analysis with learnings
         """
         # Build query
         query_parts = [
@@ -61,7 +61,7 @@ CAMPAIGN CONTEXT:
 RETRIEVED CASE STUDIES:
 {context}
 
-Provide your analysis in JSON format as specified in your system message.
+Provide your analysis using the interactive markdown structure specified in your system message.
 Focus on extracting actionable learnings, not just summarizing campaigns."""
 
         response = await self.agent.on_messages(

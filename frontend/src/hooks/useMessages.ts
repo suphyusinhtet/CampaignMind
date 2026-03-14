@@ -42,18 +42,12 @@ export function useMessages(conversationId: string) {
       setMessages((prev) => [...prev, optimisticUserMsg])
 
       try {
-        const assistantMsg = await conversationsApi.sendMessage(conversationId, {
+        await conversationsApi.sendMessage(conversationId, {
           content,
         })
-        // Replace optimistic with confirmed user msg + append assistant response
-        setMessages((prev) => [
-          ...prev.filter((m) => m.id !== optimisticId),
-          {
-            ...optimisticUserMsg,
-            id: `user-confirmed-${Date.now()}`,
-          },
-          assistantMsg,
-        ])
+        const refreshedConversation: Conversation =
+          await conversationsApi.get(conversationId)
+        setMessages(refreshedConversation.messages ?? [])
       } catch (e: unknown) {
         // Roll back optimistic message on error
         setMessages((prev) => prev.filter((m) => m.id !== optimisticId))

@@ -1,5 +1,6 @@
 import { LoginForm } from '@/components/auth/LoginForm'
 import Link from 'next/link'
+import { isGuestModeEnabled } from '@/lib/supabase/config'
 
 export default function LoginPage() {
   return (
@@ -14,14 +15,16 @@ export default function LoginPage() {
           </p>
         </div>
         <LoginForm />
-        <div className="border-t border-gray-200 pt-4">
-          <Link
-            href="/"
-            className="block text-center text-sm font-medium text-gray-600 hover:text-gray-900"
-          >
-            Continue as guest
-          </Link>
-        </div>
+        {isGuestModeEnabled && (
+          <div className="border-t border-gray-200 pt-4">
+            <Link
+              href="/"
+              className="block text-center text-sm font-medium text-gray-600 hover:text-gray-900"
+            >
+              Continue as guest
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   )

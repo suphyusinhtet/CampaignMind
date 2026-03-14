@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 class KnowledgeManager:
     """
-    Manages document ingestion, embedding, and retrieval for Pathfinder AI.
+    Manages document ingestion, embedding, and retrieval for CampaignMind AI.
     Uses ChromaDB for vector storage and LangChain for text processing.
     """
     

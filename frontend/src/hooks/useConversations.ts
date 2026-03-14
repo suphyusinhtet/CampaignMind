@@ -36,11 +36,17 @@ export function useConversations() {
     setConversations((prev) => prev.filter((c) => c.id !== id))
   }, [])
 
-  const updateTitle = useCallback((id: string, title: string) => {
-    setConversations((prev) =>
-      prev.map((c) => (c.id === id ? { ...c, title } : c)),
-    )
-  }, [])
+  const renameConversation = useCallback(
+    async (id: string, title: string) => {
+      const updated = await conversationsApi.rename(id, { title })
+      setConversations((prev) => {
+        const next = prev.map((c) => (c.id === id ? updated : c))
+        return next.sort((a, b) => b.updated_at.localeCompare(a.updated_at))
+      })
+      return updated
+    },
+    [],
+  )
 
   return {
     conversations,
@@ -48,6 +54,6 @@ export function useConversations() {
     refresh,
     createConversation,
     deleteConversation,
-    updateTitle,
+    renameConversation,
   }
 }

@@ -10,16 +10,52 @@ interface AnalysisPanelProps {
 }
 
 const SECTIONS = [
-  { key: 'brief_analysis' as const, label: 'Brief Analysis', emoji: '📋' },
-  { key: 'trend_analysis' as const, label: 'Trend Analysis', emoji: '📈' },
-  { key: 'case_analysis' as const, label: 'Case Intelligence', emoji: '🔍' },
-  { key: 'landscape_analysis' as const, label: 'Market Landscape', emoji: '🗺️' },
+  {
+    key: 'brief_analysis',
+    label: 'Brief Analysis',
+    emoji: '📋',
+    getContent: (metadata: AnalysisMetadata) => metadata.brief_analysis,
+  },
+  {
+    key: 'trend_analysis',
+    label: 'Trend Analysis',
+    emoji: '📈',
+    getContent: (metadata: AnalysisMetadata) => metadata.trend_analysis,
+  },
+  {
+    key: 'case_analysis',
+    label: 'Case Intelligence',
+    emoji: '🔍',
+    getContent: (metadata: AnalysisMetadata) => metadata.case_analysis,
+  },
+  {
+    key: 'landscape_analysis',
+    label: 'Market Landscape',
+    emoji: '🗺️',
+    getContent: (metadata: AnalysisMetadata) => metadata.landscape_analysis,
+  },
+  {
+    key: 'final_insights',
+    label: 'Insight Generator',
+    emoji: '💡',
+    getContent: (metadata: AnalysisMetadata) =>
+      metadata.final_insights || metadata.insight_analysis,
+  },
+  {
+    key: 'creator_concepts',
+    label: 'Creator Agent',
+    emoji: '🎨',
+    getContent: (metadata: AnalysisMetadata) => metadata.creator_concepts,
+  },
 ] as const
 
 export function AnalysisPanel({ metadata }: AnalysisPanelProps) {
   const [openSection, setOpenSection] = useState<string | null>(null)
 
-  const availableSections = SECTIONS.filter(({ key }) => !!metadata[key])
+  const availableSections = SECTIONS.map((section) => ({
+    ...section,
+    content: section.getContent(metadata),
+  })).filter((section) => !!section.content)
 
   if (availableSections.length === 0) return null
 
@@ -31,8 +67,7 @@ export function AnalysisPanel({ metadata }: AnalysisPanelProps) {
           {metadata.processing_time_seconds.toFixed(1)}s
         </p>
       )}
-      {availableSections.map(({ key, label, emoji }) => {
-        const content = metadata[key]!
+      {availableSections.map(({ key, label, emoji, content }) => {
         const isOpen = openSection === key
 
         return (
@@ -57,7 +92,7 @@ export function AnalysisPanel({ metadata }: AnalysisPanelProps) {
             {isOpen && (
               <div className="border-t border-gray-100 px-4 py-3 prose prose-sm prose-gray max-w-none">
                 <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                  {content}
+                  {content ?? ''}
                 </ReactMarkdown>
               </div>
             )}

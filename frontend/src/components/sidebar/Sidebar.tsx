@@ -1,6 +1,8 @@
 'use client'
 import { LogOut, Zap } from 'lucide-react'
 import { clsx } from 'clsx'
+import { usePathname, useRouter } from 'next/navigation'
+import { useState } from 'react'
 import { NewChatButton } from './NewChatButton'
 import { ConversationList } from './ConversationList'
 import { useAuth } from '@/hooks/useAuth'
@@ -16,7 +18,27 @@ export function Sidebar({
   authEnabled = true,
   className,
 }: SidebarProps) {
+  const router = useRouter()
+  const pathname = usePathname()
   const { signOut } = useAuth()
+  const [signingOut, setSigningOut] = useState(false)
+
+  const handleSignOut = async () => {
+    if (signingOut) return
+    setSigningOut(true)
+    try {
+      await signOut()
+      router.replace('/login')
+      router.refresh()
+    } finally {
+      setSigningOut(false)
+    }
+  }
+
+  const handleSignIn = () => {
+    const nextPath = pathname && pathname.trim().length > 0 ? pathname : '/'
+    router.push(`/login?next=${encodeURIComponent(nextPath)}`)
+  }
 
   return (
     <aside
@@ -54,13 +76,22 @@ export function Sidebar({
         <div className="flex-1 min-w-0">
           <p className="truncate text-xs text-zinc-300">{userEmail ?? 'Guest mode'}</p>
         </div>
-        {authEnabled && (
+        {authEnabled ? (
           <button
-            onClick={signOut}
+            onClick={handleSignOut}
+            disabled={signingOut}
             className="shrink-0 text-zinc-500 transition-colors hover:text-white"
-            title="Sign out"
+            title={signingOut ? 'Signing out...' : 'Sign out'}
           >
             <LogOut size={15} />
+          </button>
+        ) : (
+          <button
+            onClick={handleSignIn}
+            className="shrink-0 rounded-md border border-zinc-600 px-2 py-1 text-xs font-medium text-zinc-200 transition-colors hover:border-zinc-500 hover:bg-zinc-800 hover:text-white"
+            title="Sign in"
+          >
+            Sign in
           </button>
         )}
       </div>

@@ -1,11 +1,11 @@
 # agents/followup_agent.py
 from autogen_agentchat.messages import TextMessage
 from autogen_core import CancellationToken
-from agents.base_agent import PathfinderAgent
+from agents.base_agent import CampaignMindAgent
 from typing import List, Dict
 
 
-FOLLOWUP_SYSTEM_MSG = """You are Pathfinder AI, a marketing strategy assistant.
+FOLLOWUP_SYSTEM_MSG = """You are CampaignMind AI, a marketing strategy assistant.
 You previously helped the user enhance a marketing campaign brief using multi-agent analysis.
 Now you are continuing that conversation with follow-up questions and refinements.
 
@@ -24,7 +24,7 @@ Guidelines:
 - If asked something outside the brief scope, redirect politely to the campaign context"""
 
 
-class FollowUpAgent(PathfinderAgent):
+class FollowUpAgent(CampaignMindAgent):
     """
     Lightweight agent for follow-up chat turns after the initial brief analysis.
     Uses conversation history as context — no RAG, no orchestration overhead.
@@ -68,7 +68,7 @@ class FollowUpAgent(PathfinderAgent):
 NEW USER MESSAGE:
 {message}
 
-Respond as Pathfinder AI. Reference the conversation context as needed. Use Markdown formatting."""
+Respond as CampaignMind AI. Reference the conversation context as needed. Use Markdown formatting."""
 
         response = await self.agent.on_messages(
             [TextMessage(content=prompt, source="user")],

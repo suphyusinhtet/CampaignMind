@@ -26,7 +26,7 @@ async def main():
     """
     
     print("=" * 70)
-    print("PATHFINDER AI - FULL AGENT PIPELINE TEST")
+    print("CampaignMind AI - FULL AGENT PIPELINE TEST")
     print("=" * 70)
     print()
     

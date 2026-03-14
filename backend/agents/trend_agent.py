@@ -2,12 +2,12 @@
 import asyncio
 from autogen_agentchat.messages import TextMessage
 from autogen_core import CancellationToken
-from agents.base_agent import PathfinderAgent
+from agents.base_agent import CampaignMindAgent
 from rag.knowledge_manager import get_knowledge_manager
 from typing import Dict, Optional
 
 
-class TrendAgent(PathfinderAgent):
+class TrendAgent(CampaignMindAgent):
     """
     Retrieves and analyzes market trends relevant to the campaign using RAG.
     """
@@ -31,7 +31,7 @@ class TrendAgent(PathfinderAgent):
             n_results: Number of trend documents to retrieve
             
         Returns:
-            JSON-formatted trend analysis with sources
+            Interactive markdown trend analysis with sources
         """
         # Build query from brief context
         query_parts = [
@@ -65,7 +65,7 @@ CAMPAIGN CONTEXT:
 RETRIEVED TRENDS:
 {context}
 
-Analyze the relevance of each trend and provide your assessment in JSON format as specified in your system message.
+Analyze the relevance of each trend and provide your assessment using the interactive markdown structure defined in your system message.
 Include only trends that are genuinely relevant and actionable."""
 
         # Run the agent

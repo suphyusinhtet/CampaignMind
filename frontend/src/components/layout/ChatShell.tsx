@@ -14,6 +14,8 @@ interface ChatShellProps {
 export function ChatShell({ children, userEmail, authEnabled }: ChatShellProps) {
   const pathname = usePathname()
   const [drawerOpen, setDrawerOpen] = useState(false)
+  const isWorkspaceView = pathname.startsWith('/conversations/')
+  const showConversationSidebar = !isWorkspaceView
 
   useEffect(() => {
     setDrawerOpen(false)
@@ -21,17 +23,23 @@ export function ChatShell({ children, userEmail, authEnabled }: ChatShellProps) 
 
   return (
     <div className="flex h-screen overflow-hidden">
-      <Sidebar userEmail={userEmail} authEnabled={authEnabled} className="hidden md:flex" />
+      {showConversationSidebar && (
+        <Sidebar userEmail={userEmail} authEnabled={authEnabled} className="hidden md:flex" />
+      )}
 
       <div className="fixed inset-x-0 top-0 z-40 border-b border-zinc-200 bg-[#f7f7f8]/95 backdrop-blur md:hidden">
         <div className="flex h-14 items-center justify-between px-3">
-          <button
-            onClick={() => setDrawerOpen(true)}
-            className="rounded-lg p-2 text-zinc-700 hover:bg-zinc-200/70"
-            aria-label="Open sidebar"
-          >
-            <Menu size={18} />
-          </button>
+          {showConversationSidebar ? (
+            <button
+              onClick={() => setDrawerOpen(true)}
+              className="rounded-lg p-2 text-zinc-700 hover:bg-zinc-200/70"
+              aria-label="Open sidebar"
+            >
+              <Menu size={18} />
+            </button>
+          ) : (
+            <div className="w-9" />
+          )}
           <div className="flex items-center gap-2 text-sm font-medium text-zinc-900">
             <Zap size={14} className="text-emerald-500" />
             CampaignMind
@@ -40,7 +48,7 @@ export function ChatShell({ children, userEmail, authEnabled }: ChatShellProps) 
         </div>
       </div>
 
-      {drawerOpen && (
+      {drawerOpen && showConversationSidebar && (
         <div className="fixed inset-0 z-50 md:hidden">
           <button
             aria-label="Close sidebar backdrop"

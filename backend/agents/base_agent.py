@@ -5,15 +5,15 @@ from config.agent_config import get_agent_config, get_model_client
 from typing import Optional
 
 
-class PathfinderAgent:
+class CampaignMindAgent:
     """
-    Base class for all Pathfinder AI agents.
-    Wraps AutoGen's AssistantAgent with Pathfinder-specific configuration.
+    Base class for all CampaignMind AI agents.
+    Wraps AutoGen's AssistantAgent with CampaignMind-specific configuration.
     """
     
     def __init__(self, agent_name: str, model_client: Optional[OpenAIChatCompletionClient] = None):
         """
-        Initialize a Pathfinder agent.
+        Initialize a CampaignMind agent.
         
         Args:
             agent_name: Name from AGENT_CONFIGS (e.g., 'brief_analyzer', 'trend_agent')
@@ -40,4 +40,4 @@ class PathfinderAgent:
         return self.agent
     
     def __repr__(self) -> str:
-        return f"PathfinderAgent({self.config['name']}, model={self.config['model']})"
+        return f"CampaignMindAgent({self.config['name']}, model={self.config['model']})"
