@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: campaignmind-backend
+    env: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    autoDeploy: true
+    envVars:
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_KEY
+        sync: false
+      - key: SUPABASE_SERVICE_KEY
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: MODEL_NAME
+        value: gemini-2.0-flash
+      - key: FRONTEND_URL
+        sync: false
+      - key: ENABLE_GUEST_MODE
+        value: "true"

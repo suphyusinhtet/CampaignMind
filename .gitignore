@@ -312,7 +312,6 @@ railway.json
 .railway/
 
 # Render
-render.yaml
 .render/
 
 # Docker
