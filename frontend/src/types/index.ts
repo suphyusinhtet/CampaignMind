@@ -10,6 +10,8 @@ export interface AnalysisMetadata {
   insight_analysis?: string
   creator_concepts?: string
   selected_creator_option?: string
+  required_metadata?: Record<string, string>
+  missing_required_metadata?: string[]
   processing_time_seconds?: number
   workflow_mode?: 'interactive' | 'autonomous'
   current_step?: string
