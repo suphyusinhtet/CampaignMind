@@ -1,5 +1,6 @@
 import { SignupForm } from '@/components/auth/SignupForm'
 import Link from 'next/link'
+import { Suspense } from 'react'
 import { isGuestModeEnabled } from '@/lib/supabase/config'
 
 export default function SignupPage() {
@@ -14,7 +15,11 @@ export default function SignupPage() {
             Start enhancing your marketing campaigns with AI
           </p>
         </div>
-        <SignupForm />
+        <Suspense
+          fallback={<div className="text-sm text-gray-500">Loading...</div>}
+        >
+          <SignupForm />
+        </Suspense>
         {isGuestModeEnabled && (
           <div className="border-t border-gray-200 pt-4">
             <Link
