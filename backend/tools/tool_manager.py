@@ -1,6 +1,9 @@
 # tools/tool_manager.py
 from typing import List, Dict, Any
-from ddgs import DDGS
+try:
+    from ddgs import DDGS
+except Exception:
+    from duckduckgo_search import DDGS
 from pytrends.request import TrendReq
 import requests
 from bs4 import BeautifulSoup
