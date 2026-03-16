@@ -26,15 +26,31 @@ app = FastAPI(
 )
 
 # CORS — allow the frontend origin (locked down; not open wildcard)
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=[
+def _frontend_origins() -> list[str]:
+    raw = settings.FRONTEND_URLS.strip()
+    extra = [item.strip() for item in raw.split(",") if item.strip()] if raw else []
+    origins = [
         "http://localhost:3000",
         "http://127.0.0.1:3000",
         "http://localhost:3001",
         "http://127.0.0.1:3001",
-        settings.FRONTEND_URL,
-    ],
+    ]
+    if settings.FRONTEND_URL:
+        origins.append(settings.FRONTEND_URL)
+    origins.extend(extra)
+    # De-duplicate while preserving order
+    seen = set()
+    ordered: list[str] = []
+    for origin in origins:
+        if origin in seen:
+            continue
+        seen.add(origin)
+        ordered.append(origin)
+    return ordered
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=_frontend_origins(),
     allow_origin_regex=r"^https?://(localhost|127\.0\.0\.1)(:\d+)?$|^https?://([a-z0-9-]+\.)*vercel\.app$",
     allow_credentials=True,
     allow_methods=["*"],

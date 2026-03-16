@@ -24,6 +24,7 @@ class Settings:
 
     # ── App ──────────────────────────────────────────────────
     FRONTEND_URL: str = os.getenv("FRONTEND_URL", "http://localhost:3000")
+    FRONTEND_URLS: str = os.getenv("FRONTEND_URLS", "")
     ENABLE_GUEST_MODE: bool = os.getenv("ENABLE_GUEST_MODE", "true").strip().lower() != "false"
 
     # ── Paths ────────────────────────────────────────────────
