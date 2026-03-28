@@ -229,4 +229,5 @@ You can test the project on this [link](https://campaign-mind.vercel.app)
 
 **Project Maintainer:** Su Phyu Sin Htet  
 **GitHub:** [@suphyusinhtet](https://github.com/suphyusinhtet)  
-**Email:** suphyusinhtet@gmi.com
+**Email:** suphyusinhtet@gmail.com
+
