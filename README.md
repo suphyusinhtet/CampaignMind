@@ -223,7 +223,7 @@ For collaboration or licensing discussions, please contact the authors directly.
 | **Self-Correction** | None | Automatic |
 
 
-You can test the project on this [link](https://campaignmind.vercel.app)
+You can test the project on this [link](https://campaign-mind.vercel.app)
 
 ## 📧 Contact
 
