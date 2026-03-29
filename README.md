@@ -177,10 +177,6 @@ Each agent uses sophisticated multi-step reasoning:
 
 ---
 
-## 📝 License
-
----
-
 ## 📜 **License & Usage**
 
 © 2026 Su Phyu Sin Htet and Hein Thu Aung. All Rights Reserved.  
